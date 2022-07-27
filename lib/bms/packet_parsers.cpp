@@ -128,12 +128,22 @@ void BmsRelay::temperatureParser(Packet& p) {
   if (p.getType() != 4) {
     return;
   }
-  int8_t* const temperatures = (int8_t*)p.data();
+  int8_t* temperatures = (int8_t*)p.data();
+  int8_t* overriden_temps = (int8_t*)p.data();
+  if(temperatures[1] > 80 || temperatures[1] < 7) {
+    overriden_temps[1] = 20;
+    p.data()[1] = 20;
+  }
+  if(temperatures[3] > 80 || temperatures[3] < 7) {
+    overriden_temps[3] = 20;
+    p.data()[3] = 20;
+  }
   int16_t temperature_sum = 0;
   for (int i = 0; i < 5; i++) {
-    int8_t temp = temperatures[i];
+    int8_t temp = overriden_temps[i];
     temperature_sum += temp;
-    temperatures_celsius_[i] = temp;
+    temperatures_celsius_[i] = temp; // First 5 values are overriden
+    temperatures_celsius_[i+5] = temperatures[i]; // Second 5 values are original
   }
   avg_temperature_celsius_ = temperature_sum / 5;
 }

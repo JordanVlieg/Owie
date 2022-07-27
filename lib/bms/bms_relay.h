@@ -139,7 +139,9 @@ class BmsRelay {
   LowPassFilter lowest_cell_voltage_filter_;
   uint16_t filtered_lowest_cell_voltage_millivolts_ = 0;
 
-  int8_t temperatures_celsius_[5] = {0};
+  // Double the number of values to hold original and overriden values.
+  // First 5 values are overriden, second 5 are original
+  int8_t temperatures_celsius_[10] = {0}; 
   int8_t avg_temperature_celsius_ = 0;
   unsigned long last_current_message_millis_ = 0;
   int16_t last_current_ = 0;

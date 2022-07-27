@@ -76,13 +76,15 @@ String generateOwieStatusJson() {
   const int8_t *thermTemps = relay->getTemperaturesCelsius();
   String temps;
   temps.reserve(256);
-  temps.concat("<tr>");
-  for (int i = 0; i < 5; i++) {
-    temps.concat("<td>");
-    temps.concat(thermTemps[i]);
-    temps.concat("</td>");
+  for (int i = 0; i < 2; i++) {
+    temps.concat("<tr>");
+    for (int j = 0; j < 5; j++) {
+      temps.concat("<td>");
+      temps.concat(thermTemps[i]);
+      temps.concat("</td>");
+    }
+    temps.concat("<tr>");
   }
-  temps.concat("<tr>");
 
   status["TOTAL_VOLTAGE"] =
       String(relay->getTotalVoltageMillivolts() / 1000.0, 2) + "v";
@@ -159,13 +161,15 @@ String templateProcessor(const String &var) {
     const int8_t *thermTemps = relay->getTemperaturesCelsius();
     String temps;
     temps.reserve(256);
-    temps.concat("<tr>");
-    for (int i = 0; i < 5; i++) {
-      temps.concat("<td>");
-      temps.concat(thermTemps[i]);
-      temps.concat("</td>");
+    for (int i = 0; i < 2; i++) {
+      temps.concat("<tr>");
+      for (int j = 0; j < 5; j++) {
+        temps.concat("<td>");
+        temps.concat(thermTemps[i]);
+        temps.concat("</td>");
+      }
+      temps.concat("<tr>");
     }
-    temps.concat("<tr>");
     return temps;
   } else if (var == "AP_PASSWORD") {
     return Settings->ap_self_password;
